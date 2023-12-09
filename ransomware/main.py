@@ -1,7 +1,7 @@
 import sys
 from encrypt import encrypt_specific_file as fileEncription
 from cryptography.fernet import Fernet
-
+from encrypt import encrypt_directory as encryptDir
 
 #total argument should be two , scrpit_name + one argument
 if len(sys.argv) == 2:
@@ -15,7 +15,8 @@ if len(sys.argv) == 2:
 		with open("encrytion_key.key" , "wb") as keyFile:
 			keyFile.write(key)
 
-		fileEncription("./test.txt",key)
+		encryptDir("../target_dir", key)
+		#fileEncription("./test.txt",key)
 		print("operation : encrypt")
 	elif operation.lower() == "decrypt":
 		print("operation : decrypt")
