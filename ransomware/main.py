@@ -2,6 +2,7 @@ import sys
 from encrypt import encrypt_specific_file as fileEncription
 from cryptography.fernet import Fernet
 from encrypt import encrypt_directory as encryptDir
+from decrypt import decrypt_directory as decryptDir
 
 #total argument should be two , scrpit_name + one argument
 if len(sys.argv) == 2:
@@ -19,6 +20,9 @@ if len(sys.argv) == 2:
 		#fileEncription("./test.txt",key)
 		print("operation : encrypt")
 	elif operation.lower() == "decrypt":
+		with open("encrytion_key.key" , "rb") as keyFile:
+			key = keyFile.read()
+		decryptDir("../target_dir",key)
 		print("operation : decrypt")
 	else:
 		print("Invalid operation. Please use 'encrypt' or 'decrypt'.")
