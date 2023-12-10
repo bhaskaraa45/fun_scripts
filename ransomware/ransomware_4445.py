@@ -93,7 +93,7 @@ def decrypt_specific_file(file,key):
 				encryptedFile.write(decrypted_data)
 			with open("./.ransomware_4445_logs.log", "a") as log:
 				log.write(file +  "\t" + "DECRYPTED" + "\n")
-	except Expection as e:
+	except Exception as e:
 		with open("./.ransomware_4445_logs.log", "a") as log:
 			log.write(file + "\t" + "failed to decrypt" + "\n")
 
