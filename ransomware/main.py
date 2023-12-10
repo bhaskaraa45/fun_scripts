@@ -1,8 +1,5 @@
 import sys
-from encrypt import encrypt_specific_file as fileEncription
 from cryptography.fernet import Fernet
-from encrypt import encrypt_directory as encryptDir
-from decrypt import decrypt_directory as decryptDir
 
 #total argument should be two , scrpit_name + one argument
 if len(sys.argv) == 2:
@@ -10,14 +7,6 @@ if len(sys.argv) == 2:
 	operation = sys.argv[1]
 
 	if operation.lower() == "encrypt":
-
-		key = Fernet.generate_key()
-
-		with open("encrytion_key.key" , "wb") as keyFile:
-			keyFile.write(key)
-
-		encryptDir("../target_dir", key)
-		#fileEncription("./test.txt",key)
 		print("operation : encrypt")
 	elif operation.lower() == "decrypt":
 		with open("encrytion_key.key" , "rb") as keyFile:
@@ -28,3 +17,36 @@ if len(sys.argv) == 2:
 		print("Invalid operation. Please use 'encrypt' or 'decrypt'.")
 else:
 	print("Please provide exactly one command line argument.")
+
+
+def encrypt_specific_file(file,key):
+	with open(file, "rb") as specifiedFile:
+		data = specifiedFile.read()
+	encrypted_data = Fernet(key).encrypt(data)
+
+	with open(file, "wb") as encryptedFile:
+		encryptedFile.write(encrypted_data)
+
+
+
+
+def encrypt_directory(path, key):
+	for root, dirs, files in os.walk(path):
+		for file in files:
+			file_path = os.path.join(root, file)
+			encrypt_specific_file(file_path, key)
+
+
+def decrypt_specific_file(file,key):
+	with open(file, "rb") as specifiedFile:
+		data = specifiedFile.read()
+	decrypted_data = Fernet(key).decrypt(data)
+
+	with open(file, "wb") as encryptedFile:
+		encryptedFile.write(decrypted_data)
+
+def decrypt_directory(path,key):
+	for root, dirs, files in os.walk(path):
+		for file in files:
+			file_path = os.path.join(root,file)
+			decrypt_specific_file(file_path,key)
